@@ -44,6 +44,7 @@
             android:tag="expanded"
             android:textAppearance="@style/TextAppearance.StatusBar.Expanded.Clock"
             android:layout_centerVertical="true"
+            android:clickable="true"
             />
 
         <com.android.systemui.statusbar.policy.DateView android:id="@+id/date"
