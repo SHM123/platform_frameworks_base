@@ -1868,4 +1868,7 @@
   <!-- Developer settings - Kill app back press -->
   <java-symbol type="string" name="app_killed_message" />
 
+  <!-- Wifi -->
+  <java-symbol type="bool" name="config_wifiApStartInterface" />
+
 </resources>
