@@ -18,6 +18,7 @@ package com.android.systemui.statusbar.phone;
 
 import java.util.ArrayList;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -79,9 +80,6 @@ public class QuickSettingsController {
     public static final String TILE_AIRPLANE = "toggleAirplane";
     public static final String TILE_FLASHLIGHT = "toggleFlashlight";
     public static final String TILE_SLEEP = "toggleSleepMode";
-    public static final String TILE_MEDIA_PLAY_PAUSE = "toggleMediaPlayPause";
-    public static final String TILE_MEDIA_PREVIOUS = "toggleMediaPrevious";
-    public static final String TILE_MEDIA_NEXT = "toggleMediaNext";
     public static final String TILE_LTE = "toggleLte";
     public static final String TILE_WIMAX = "toggleWimax";
 
@@ -90,8 +88,10 @@ public class QuickSettingsController {
             + TILE_DELIMITER + TILE_BRIGHTNESS
             + TILE_DELIMITER + TILE_SETTINGS
             + TILE_DELIMITER + TILE_WIFI
-            + TILE_DELIMITER + TILE_BLUETOOTH
-            + TILE_DELIMITER + TILE_SOUND;
+            + TILE_DELIMITER + TILE_MOBILEDATA
+            + TILE_DELIMITER + TILE_BATTERY
+            + TILE_DELIMITER + TILE_AIRPLANE
+            + TILE_DELIMITER + TILE_BLUETOOTH;
     /**
      * END OF DATA MATCHING BLOCK
      */
@@ -163,7 +163,9 @@ public class QuickSettingsController {
             } else if (tile.equals(TILE_GPS)) {
                 mQuickSettings.add(GPS_TILE);
             } else if (tile.equals(TILE_BLUETOOTH)) {
-                mQuickSettings.add(BLUETOOTH_TILE);
+                if(deviceSupportsBluetooth()) {
+                    mQuickSettings.add(BLUETOOTH_TILE);
+                }
             } else if (tile.equals(TILE_BRIGHTNESS)) {
                 mQuickSettings.add(BRIGHTNESS_TILE);
             } else if (tile.equals(TILE_SOUND)) {
@@ -171,7 +173,9 @@ public class QuickSettingsController {
             } else if (tile.equals(TILE_SYNC)) {
                 // Not available yet
             } else if (tile.equals(TILE_WIFIAP)) {
-                mQuickSettings.add(WIFIAP_TILE);
+                if(deviceSupportsTelephony()) {
+                    mQuickSettings.add(WIFIAP_TILE);
+                }
             } else if (tile.equals(TILE_SCREENTIMEOUT)) {
                 // Not available yet
             } else if (tile.equals(TILE_MOBILEDATA)) {
@@ -181,8 +185,9 @@ public class QuickSettingsController {
             } else if (tile.equals(TILE_LOCKSCREEN)) {
                 mQuickSettings.add(TOGGLE_LOCKSCREEN_TILE);
             } else if (tile.equals(TILE_NETWORKMODE)) {
-                // This toggle is still not working:
-                // quicksettings.add(MOBILE_NETWORK_TYPE_TILE);
+                if(deviceSupportsTelephony()) {
+                    mQuickSettings.add(MOBILE_NETWORK_TYPE_TILE);
+                }
             } else if (tile.equals(TILE_AUTOROTATE)) {
                 mQuickSettings.add(AUTO_ROTATION_TILE);
             } else if (tile.equals(TILE_AIRPLANE)) {
@@ -191,12 +196,6 @@ public class QuickSettingsController {
                 mQuickSettings.add(FLASHLIGHT_TILE);
             } else if (tile.equals(TILE_SLEEP)) {
                 mQuickSettings.add(SLEEP_TILE);
-            } else if (tile.equals(TILE_MEDIA_PLAY_PAUSE)) {
-                // Not available yet
-            } else if (tile.equals(TILE_MEDIA_PREVIOUS)) {
-                // Not available yet
-            } else if (tile.equals(TILE_MEDIA_NEXT)) {
-                // Not available yet
             } else if (tile.equals(TILE_WIMAX)) {
                 // Not available yet
             } else if (tile.equals(TILE_LTE)) {
@@ -229,6 +228,10 @@ public class QuickSettingsController {
     boolean deviceSupportsTelephony() {
         PackageManager pm = mContext.getPackageManager();
         return pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY);
+    }
+
+    boolean deviceSupportsBluetooth() {
+        return (BluetoothAdapter.getDefaultAdapter() != null);
     }
 
     void setBar(PanelBar bar) {
