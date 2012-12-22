@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2012 The Android Open Source Project
  *
@@ -28,6 +29,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.net.Uri;
+import android.nfc.NfcAdapter;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
@@ -41,6 +43,7 @@ import com.android.systemui.quicksettings.BatteryTile;
 import com.android.systemui.quicksettings.BluetoothTile;
 import com.android.systemui.quicksettings.BrightnessTile;
 import com.android.systemui.quicksettings.BugReportTile;
+import com.android.systemui.quicksettings.NfcTile;
 import com.android.systemui.quicksettings.TorchTile;
 import com.android.systemui.quicksettings.GPSTile;
 import com.android.systemui.quicksettings.InputMethodTile;
@@ -96,6 +99,7 @@ public class QuickSettingsController {
     public static final String TILE_SLEEP = "toggleSleepMode";
     public static final String TILE_LTE = "toggleLte";
     public static final String TILE_WIMAX = "toggleWimax";
+    public static final String TILE_NFC = "toggleNfc";
 
     private static final String TILE_DELIMITER = "|";
     private static final String TILES_DEFAULT = TILE_USER
@@ -142,6 +146,7 @@ public class QuickSettingsController {
     public static final int TORCH_TILE = 19;
     public static final int WIFIAP_TILE = 20;
     public static final int SYNC_TILE = 22;
+    public static final int NFC_TILE = 23;
     public static final int USER_TILE = 99;
     private InputMethodTile IMETile;
 
@@ -213,6 +218,10 @@ public class QuickSettingsController {
                 mQuickSettings.add(TORCH_TILE);
             } else if (tile.equals(TILE_SLEEP)) {
                 mQuickSettings.add(SLEEP_TILE);
+            } else if (tile.equals(TILE_NFC)) {
+                // User cannot add the NFC tile if the device does not support it
+                // No need to check again here
+                mQuickSettings.add(NFC_TILE);
             } else if (tile.equals(TILE_WIMAX)) {
                 // Not available yet
             } else if (tile.equals(TILE_LTE)) {
@@ -430,6 +439,10 @@ public class QuickSettingsController {
                 break;
             case SYNC_TILE:
                 qs = new SyncTile(mContext, inflater,
+                        (QuickSettingsContainerView) mContainerView, this);
+                break;
+            case NFC_TILE:
+                qs = new NfcTile(mContext, inflater,
                         (QuickSettingsContainerView) mContainerView, this);
                 break;
             }
