@@ -43,6 +43,7 @@ import com.android.systemui.quicksettings.BluetoothTile;
 import com.android.systemui.quicksettings.BrightnessTile;
 import com.android.systemui.quicksettings.BugReportTile;
 import com.android.systemui.quicksettings.NfcTile;
+import com.android.systemui.quicksettings.ScreenTimeoutTile;
 import com.android.systemui.quicksettings.TorchTile;
 import com.android.systemui.quicksettings.GPSTile;
 import com.android.systemui.quicksettings.InputMethodTile;
@@ -142,6 +143,7 @@ public class QuickSettingsController {
     public static final int WIFIAP_TILE = 18;
     public static final int SYNC_TILE = 19;
     public static final int NFC_TILE = 20;
+    public static final int SCREENTIMEOUT_TILE = 21;
     public static final int USER_TILE = 99;
     private InputMethodTile IMETile;
 
@@ -194,7 +196,7 @@ public class QuickSettingsController {
                     mQuickSettings.add(WIFIAP_TILE);
                 }
             } else if (tile.equals(TILE_SCREENTIMEOUT)) {
-                // Not available yet
+                mQuickSettings.add(SCREENTIMEOUT_TILE);
             } else if (tile.equals(TILE_MOBILEDATA)) {
                 if(deviceSupportsTelephony()) {
                     mQuickSettings.add(MOBILE_NETWORK_TILE);
@@ -430,6 +432,10 @@ public class QuickSettingsController {
                 break;
             case NFC_TILE:
                 qs = new NfcTile(mContext, inflater,
+                        (QuickSettingsContainerView) mContainerView, this);
+                break;
+            case SCREENTIMEOUT_TILE:
+                qs = new ScreenTimeoutTile(mContext, inflater,
                         (QuickSettingsContainerView) mContainerView, this);
                 break;
             }
