@@ -217,9 +217,6 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     private boolean mShowCarrierInPanel = false;
 
-    // clock
-    private boolean mShowClock;
-
     // drag bar
     CloseDragHandle mCloseView;
     private int mCloseViewHeight;
@@ -1226,10 +1223,8 @@ public class PhoneStatusBar extends BaseStatusBar {
         if (mStatusBarView == null) return;
         ContentResolver resolver = mContext.getContentResolver();
         View clock = mStatusBarView.findViewById(R.id.clock);
-        mShowClock = (Settings.System.getInt(resolver,
-                Settings.System.STATUS_BAR_CLOCK, 1) == 1);
         if (clock != null) {
-            clock.setVisibility(show ? (mShowClock ? View.VISIBLE : View.GONE) : View.GONE);
+            clock.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
 
