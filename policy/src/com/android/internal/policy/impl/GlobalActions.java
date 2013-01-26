@@ -327,32 +327,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 });
         }
 
-        // next: profile
-        // only shown if both system profiles and the menu item is enabled, enabled by default
-        if ((Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.SYSTEM_PROFILES_ENABLED, 1) == 1) &&
-                (Settings.System.getInt(mContext.getContentResolver(),
-                        Settings.System.POWER_MENU_PROFILES_ENABLED, 1) == 1)) {
-            mItems.add(
-                new ProfileChooseAction() {
-                    public void onPress() {
-                        createProfileDialog();
-                    }
-
-                    public boolean onLongPress() {
-                        return true;
-                    }
-
-                    public boolean showDuringKeyguard() {
-                        return false;
-                    }
-
-                    public boolean showBeforeProvisioning() {
-                        return false;
-                    }
-                });
-        }
-
         // next: screenshot
         // only shown if enabled, disabled by default
         if (Settings.System.getInt(mContext.getContentResolver(),
